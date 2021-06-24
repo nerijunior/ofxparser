@@ -2,6 +2,7 @@
 
 namespace OfxParserTest\Entities;
 
+use Exception;
 use SimpleXMLElement;
 use PHPUnit\Framework\TestCase;
 use OfxParser\Entities\Investment;
@@ -63,6 +64,8 @@ class InvestmentTest extends TestCase
      */
     public function testLoadOfxException()
     {
+        $this->expectException(Exception::class);
+
         $xml = new SimpleXMLElement('<xml></xml>');
         $entity = new InvestmentNoLoadOfx();
         $entity->loadOfx($xml);

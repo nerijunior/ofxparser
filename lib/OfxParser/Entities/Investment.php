@@ -33,4 +33,3 @@ abstract class Investment extends AbstractEntity implements Inspectable, OfxLoad
         throw new \Exception('loadOfx method not defined in class "' . get_class() . '"');
     }
 }
-

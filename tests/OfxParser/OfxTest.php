@@ -15,9 +15,9 @@ class OfxTest extends TestCase
      */
     protected $ofxData;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $ofxFile = dirname(__DIR__).'/fixtures/ofxdata-xml.ofx';
+        $ofxFile = dirname(__DIR__) . '/fixtures/ofxdata-xml.ofx';
 
         if (!file_exists($ofxFile)) {
             self::markTestSkipped('Could not find data file, cannot test Ofx Class');
@@ -41,7 +41,7 @@ class OfxTest extends TestCase
 
     public function testBuildsMultipleBankAccounts()
     {
-        $multiOfxFile = dirname(__DIR__).'/fixtures/ofx-multiple-accounts-xml.ofx';
+        $multiOfxFile = dirname(__DIR__) . '/fixtures/ofx-multiple-accounts-xml.ofx';
         if (!file_exists($multiOfxFile)) {
             self::markTestSkipped('Could not find multiple account data file, cannot fully test Multiple Bank Accounts');
         }
@@ -73,36 +73,36 @@ class OfxTest extends TestCase
         self::assertCount(3, $transactions);
 
         $expectedTransactions = [
-           [
-              'type' => 'CREDIT',
-              'typeDesc' => 'Generic credit',
-              'amount' => '200.00',
-              'uniqueId' => '980315001',
-              'name' => 'DEPOSIT',
-              'memo' => 'automatic deposit',
-              'sic' => '',
-              'checkNumber' => ''
-           ],
-           [
-               'type' => 'CREDIT',
-               'typeDesc' => 'Generic credit',
-               'amount' => '150.00',
-               'uniqueId' => '980310001',
-               'name' => 'TRANSFER',
-               'memo' => 'Transfer from checking',
-               'sic' => '',
-               'checkNumber' => ''
-           ],
-           [
-               'type' => 'CHECK',
-               'typeDesc' => 'Cheque',
-               'amount' => '-100.00',
-               'uniqueId' => '980309001',
-               'name' => 'Cheque',
-               'memo' => '',
-               'sic' => '',
-               'checkNumber' => '1025'
-           ],
+            [
+                'type' => 'CREDIT',
+                'typeDesc' => 'Generic credit',
+                'amount' => '200.00',
+                'uniqueId' => '980315001',
+                'name' => 'DEPOSIT',
+                'memo' => 'automatic deposit',
+                'sic' => '',
+                'checkNumber' => ''
+            ],
+            [
+                'type' => 'CREDIT',
+                'typeDesc' => 'Generic credit',
+                'amount' => '150.00',
+                'uniqueId' => '980310001',
+                'name' => 'TRANSFER',
+                'memo' => 'Transfer from checking',
+                'sic' => '',
+                'checkNumber' => ''
+            ],
+            [
+                'type' => 'CHECK',
+                'typeDesc' => 'Cheque',
+                'amount' => '-100.00',
+                'uniqueId' => '980309001',
+                'name' => 'Cheque',
+                'memo' => '',
+                'sic' => '',
+                'checkNumber' => '1025'
+            ],
 
         ];
 
