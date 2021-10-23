@@ -51,6 +51,8 @@ class Income extends Investment
      */
     public function loadOfx(SimpleXMLElement $node)
     {
+        $this->xmlNode = $node;
+
         // Transaction data is in the root
         $this->loadInvTran($node->INVTRAN)
             ->loadSecId($node->SECID)

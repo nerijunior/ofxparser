@@ -4,6 +4,8 @@ namespace OfxParser\Parsers;
 
 use PHPUnit\Framework\TestCase;
 use OfxParser\Parsers\Investment as InvestmentParser;
+use OfxParser\Entities\Investment as InvestmentEntity;
+use SimpleXMLElement;
 
 /**
  * @covers OfxParser\Parsers\Investment
@@ -263,5 +265,20 @@ class InvestmentTest extends TestCase
 
         self::assertEquals('USD', $transactions[5]->currency);
         self::assertEquals(0.867, $transactions[5]->currencyRate);
+    }
+
+    public function testParseInvestmentsXMLNode()
+    {
+        $parser = new InvestmentParser();
+        $ofx = $parser->loadFromFile(__DIR__ . '/../../fixtures/ofxdata-investments-xml.ofx');
+
+        $account = reset($ofx->bankAccounts);
+        $transactions = $account->statement->transactions;
+        self::assertCount(6, $transactions);
+        foreach ($transactions as $transaction) {
+            if ($transaction instanceof InvestmentEntity) {
+                $this->assertInstanceOf(SimpleXMLElement::class, $transaction->xmlNode);
+            }
+        }
     }
 }

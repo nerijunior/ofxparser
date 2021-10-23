@@ -54,6 +54,8 @@ class SellSecurity extends Investment
      */
     public function loadOfx(SimpleXMLElement $node)
     {
+        $this->xmlNode = $node;
+
         // Transaction data is nested within <INVBUY> child node
         $this->loadInvTran($node->INVSELL->INVTRAN)
             ->loadSecId($node->INVSELL->SECID)
