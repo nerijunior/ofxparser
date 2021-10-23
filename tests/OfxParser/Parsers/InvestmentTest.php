@@ -4,6 +4,8 @@ namespace OfxParser\Parsers;
 
 use PHPUnit\Framework\TestCase;
 use OfxParser\Parsers\Investment as InvestmentParser;
+use OfxParser\Entities\Investment as InvestmentEntity;
+use SimpleXMLElement;
 
 /**
  * @covers OfxParser\Parsers\Investment
@@ -234,6 +236,48 @@ class InvestmentTest extends TestCase
                         );
                     }
                 }
+            }
+        }
+    }
+
+    public function testParseInvestmentsXMLCurrency()
+    {
+        $parser = new InvestmentParser();
+        $ofx = $parser->loadFromFile(__DIR__ . '/../../fixtures/ofxdata-investments-currency-xml.ofx');
+
+        $account = reset($ofx->bankAccounts);
+        $transactions = $account->statement->transactions;
+
+        self::assertEquals('', $transactions[0]->currency);
+        self::assertEquals(0.0, $transactions[0]->currencyRate);
+
+        self::assertEquals('EUR', $transactions[1]->currency);
+        self::assertEquals(1.0, $transactions[1]->currencyRate);
+
+        self::assertEquals('USD', $transactions[2]->currency);
+        self::assertEquals(0.867, $transactions[2]->currencyRate);
+
+        self::assertEquals('', $transactions[3]->currency);
+        self::assertEquals(0.0, $transactions[3]->currencyRate);
+
+        self::assertEquals('USD', $transactions[4]->currency);
+        self::assertEquals(0.867, $transactions[4]->currencyRate);
+
+        self::assertEquals('USD', $transactions[5]->currency);
+        self::assertEquals(0.867, $transactions[5]->currencyRate);
+    }
+
+    public function testParseInvestmentsXMLNode()
+    {
+        $parser = new InvestmentParser();
+        $ofx = $parser->loadFromFile(__DIR__ . '/../../fixtures/ofxdata-investments-xml.ofx');
+
+        $account = reset($ofx->bankAccounts);
+        $transactions = $account->statement->transactions;
+        self::assertCount(6, $transactions);
+        foreach ($transactions as $transaction) {
+            if ($transaction instanceof InvestmentEntity) {
+                $this->assertInstanceOf(SimpleXMLElement::class, $transaction->xmlNode);
             }
         }
     }

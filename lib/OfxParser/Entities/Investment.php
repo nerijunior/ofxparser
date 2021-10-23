@@ -7,11 +7,16 @@ use SimpleXMLElement;
 abstract class Investment extends AbstractEntity implements Inspectable, OfxLoadable
 {
     /**
+     * @var SimpleXMLElement
+     */
+    public $xmlNode;
+
+    /**
      * Get a list of properties defined for this entity.
      *
      * Since Traits are being used for multiple inheritance,
      * it can be challenging to know which properties exist
-     * in the entity. 
+     * in the entity.
      *
      * @return array array('prop_name' => 'prop_name', ...)
      */

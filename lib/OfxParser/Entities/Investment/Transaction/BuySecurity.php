@@ -2,6 +2,7 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
+use OfxParser\Entities\Investment\Transaction\Traits\Currency;
 use SimpleXMLElement;
 use OfxParser\Entities\AbstractEntity;
 use OfxParser\Entities\Investment;
@@ -14,7 +15,7 @@ use OfxParser\Entities\Investment\Transaction\Traits\Pricing;
  * 13.9.2.4.3 Investment Buy/Sell Aggregates <INVBUY>/<INVSELL>
  *
  * Properties found in the <INVBUY> aggregate.
- * Used for "other securities" BUY activities and provides the 
+ * Used for "other securities" BUY activities and provides the
  * base properties to extend for more specific activities.
  *
  * Required:
@@ -39,6 +40,7 @@ class BuySecurity extends Investment
     use InvTran;
     use SecId;
     use Pricing;
+    use Currency;
 
     /**
      * @var string
@@ -52,10 +54,13 @@ class BuySecurity extends Investment
      */
     public function loadOfx(SimpleXMLElement $node)
     {
+        $this->xmlNode = $node;
+
         // Transaction data is nested within <INVBUY> child node
         $this->loadInvTran($node->INVBUY->INVTRAN)
             ->loadSecId($node->INVBUY->SECID)
-            ->loadPricing($node->INVBUY);
+            ->loadPricing($node->INVBUY)
+            ->loadCurrency($node->INVBUY->CURRENCY);
 
         return $this;
     }

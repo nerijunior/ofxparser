@@ -35,7 +35,7 @@ class Utils
         if (!isset($dateString) || trim($dateString) === '') {
             return null;
         }
-        
+
         $regex = '/'
             . "(\d{4})(\d{2})(\d{2})?"     // YYYYMMDD             1,2,3
             . "(?:(\d{2})(\d{2})(\d{2}))?" // HHMMSS   - optional  4,5,6
@@ -82,12 +82,18 @@ class Utils
      * 0.000,00 and -0.000,00
      * 0,000.00 and -0,000.00
      * 000.00 and 000.00
+     * 0000 and -0000
      *
      * @param  string $amountString
      * @return float
      */
     public static function createAmountFromStr($amountString)
     {
+        // No decimals
+        if (preg_match('/^(-|\+)?([\d]+)$/', $amountString) === 1) {
+            return (float)$amountString;
+        }
+
         // Decimal mark style (UK/US): 000.00 or 0,000.00
         if (preg_match('/^(-|\+)?([\d,]+)(\.?)([\d]{2})$/', $amountString) === 1) {
             return (float)preg_replace(
