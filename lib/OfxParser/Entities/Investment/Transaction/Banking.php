@@ -2,6 +2,7 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
+use OfxParser\Entities\Investment\Transaction\Traits\Currency;
 use SimpleXMLElement;
 use OfxParser\Utils;
 use OfxParser\Entities\Inspectable;
@@ -17,6 +18,11 @@ use OfxParser\Entities\Transaction as BaseTransaction;
  */
 class Banking extends BaseTransaction implements OfxLoadable, Inspectable
 {
+    /**
+     * Traits used to define properties
+     */
+    use Currency;
+
     /**
      * @var string
      */
@@ -53,6 +59,8 @@ class Banking extends BaseTransaction implements OfxLoadable, Inspectable
 
         // Could put this in another trait.
         $this->subAccountFund = (string) $node->SUBACCTFUND;
+
+        $this->loadCurrency($node->STMTTRN->CURRENCY);
 
         return $this;
     }

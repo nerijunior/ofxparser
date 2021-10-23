@@ -2,6 +2,7 @@
 
 namespace OfxParser\Entities\Investment\Transaction;
 
+use OfxParser\Entities\Investment\Transaction\Traits\Currency;
 use SimpleXMLElement;
 use OfxParser\Entities\AbstractEntity;
 use OfxParser\Entities\Investment;
@@ -36,6 +37,7 @@ class Income extends Investment
     use InvTran;
     use Pricing; // Not all of these are required for this node
     use SecId;
+    use Currency;
 
     /**
      * @var string
@@ -53,7 +55,8 @@ class Income extends Investment
         $this->loadInvTran($node->INVTRAN)
             ->loadSecId($node->SECID)
             ->loadPricing($node)
-            ->loadIncomeType($node);
+            ->loadIncomeType($node)
+            ->loadCurrency($node->CURRENCY);
 
         return $this;
     }
